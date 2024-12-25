@@ -10,21 +10,27 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { z } from "zod";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CheckCircle2 } from "lucide-react";
-import { Check } from "lucide-react";
-import { truncate } from "fs";
 
-interface FormData {
-  street: string;
-  apartment: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  country: string;
-}
+const zipCodePattern = /^[0-9]{5}(-[0-9]{4})?$/;
+const addressSchema = z.object({
+  street: z.string().min(5, "Street address should be minimum 5 characters"),
+  apartment: z.string().optional(),
+  city: z.string().min(1, "City is required"),
+  state: z.string().min(1, "State is required"),
+  zipCode: z.string().regex(zipCodePattern, {
+    message:
+      "Invalid ZIP code format. It should be in the form '12345' or '12345-6789'.",
+  }),
+  country: z.string().min(1, "Country is required"),
+});
+
+type FormData = z.infer<typeof addressSchema>;
 
 export function OldForm() {
+  const [errors, setErrors] = useState<Partial<FormData>>({});
   const [formData, setFormData] = useState<FormData>({
     street: "",
     apartment: "",
@@ -39,10 +45,30 @@ export function OldForm() {
     success: false,
   });
 
+  const validateForm = (): boolean => {
+    const result = addressSchema.safeParse(formData);
+    if (!result.success) {
+      const fieldErrors: Partial<FormData> = {};
+      result.error.issues.forEach((issue) => {
+        if (issue.path) {
+          fieldErrors[issue.path[0] as keyof FormData] = issue.message;
+        }
+      });
+      setErrors(fieldErrors);
+      return false;
+    }
+    setErrors({});
+    return true;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validateForm()) {
+      return; // Stop here if validation fails
+    }
     setIsSubmitting(true);
     setServerResponse({ ...serverResponse, message: "", success: false });
+
     try {
       // Simulate form submission with potential for error
       await new Promise((resolve, reject) => {
@@ -107,14 +133,17 @@ export function OldForm() {
                 id="street"
                 name="street"
                 placeholder="123 Main St"
-                required
-                minLength={5}
-                maxLength={100}
                 autoComplete="street-address"
                 aria-describedby="streetAddress-error"
                 value={formData.street}
                 onChange={handleChange}
+                className={errors?.street ? "border-red-500" : ""}
               />
+              {errors?.street && (
+                <p id="street-error" className="text-sm text-red-500">
+                  {errors.street}
+                </p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -123,12 +152,18 @@ export function OldForm() {
                 id="apartment"
                 name="apartment"
                 placeholder="Apt 4B"
-                maxLength={20}
                 autoComplete="address-line2"
                 aria-describedby="apartment-error"
                 value={formData.apartment}
                 onChange={handleChange}
+                className={errors?.apartment ? "border-red-500" : ""}
               />
+
+              {errors?.apartment && (
+                <p id="apartment-error" className="text-sm text-red-500">
+                  {errors.apartment}
+                </p>
+              )}
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -138,14 +173,17 @@ export function OldForm() {
                   id="city"
                   name="city"
                   placeholder="New York"
-                  required
-                  minLength={2}
-                  maxLength={50}
                   autoComplete="address-level2"
                   aria-describedby="city-error"
                   value={formData.city}
                   onChange={handleChange}
+                  className={errors?.city ? "border-red-500" : ""}
                 />
+                {errors?.city && (
+                  <p id="city-error" className="text-sm text-red-500">
+                    {errors.city}
+                  </p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -154,14 +192,17 @@ export function OldForm() {
                   id="state"
                   name="state"
                   placeholder="NY"
-                  required
-                  minLength={2}
-                  maxLength={50}
                   autoComplete="address-level1"
                   aria-describedby="state-error"
                   value={formData.state}
                   onChange={handleChange}
+                  className={errors?.state ? "border-red-500" : ""}
                 />
+                {errors?.state && (
+                  <p id="state-error" className="text-sm text-red-500">
+                    {errors.state}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -172,14 +213,17 @@ export function OldForm() {
                   id="zipCode"
                   name="zipCode"
                   placeholder="10001"
-                  required
-                  pattern="[0-9]{5}(-[0-9]{4})?"
-                  maxLength={10}
                   autoComplete="postal-code"
                   aria-describedby="zipCode-error"
                   value={formData.zipCode}
                   onChange={handleChange}
+                  className={errors?.zipCode ? "border-red-500" : ""}
                 />
+                {errors?.zipCode && (
+                  <p id="zipCode-error" className="text-sm text-red-500">
+                    {errors.zipCode}
+                  </p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -188,14 +232,17 @@ export function OldForm() {
                   id="country"
                   name="country"
                   placeholder="United States"
-                  required
-                  minLength={2}
-                  maxLength={56}
                   autoComplete="country-name"
                   aria-describedby="country-error"
                   value={formData.country}
                   onChange={handleChange}
+                  className={errors?.country ? "border-red-500" : ""}
                 />
+                {errors?.country && (
+                  <p id="country-error" className="text-sm text-red-500">
+                    {errors.country}
+                  </p>
+                )}
               </div>
             </div>
           </div>

@@ -47,9 +47,9 @@ export function NewForm() {
                 name="street"
                 placeholder="123 Main St"
                 defaultValue={state.inputs?.street}
-                required
-                minLength={5}
-                maxLength={100}
+                // required
+                // minLength={5}
+                // maxLength={100}
                 autoComplete="street-address"
                 aria-describedby="streetAddress-error"
                 className={state?.errors?.street ? "border-red-500" : ""}
@@ -68,7 +68,7 @@ export function NewForm() {
                 name="apartment"
                 placeholder="Apt 4B"
                 defaultValue={state.inputs?.apartment}
-                maxLength={20}
+                // maxLength={20}
                 autoComplete="address-line2"
                 aria-describedby="apartment-error"
               />
@@ -81,10 +81,10 @@ export function NewForm() {
                   id="city"
                   name="city"
                   placeholder="New York"
-                  required
+                  // required
+                  // minLength={2}
+                  // maxLength={50}
                   defaultValue={state.inputs?.city}
-                  minLength={2}
-                  maxLength={50}
                   autoComplete="address-level2"
                   aria-describedby="city-error"
                   className={state?.errors?.city ? "border-red-500" : ""}
@@ -102,10 +102,10 @@ export function NewForm() {
                   id="state"
                   name="state"
                   placeholder="NY"
-                  required
-                  minLength={2}
+                  // required
+                  // minLength={2}
+                  // maxLength={50}
                   defaultValue={state.inputs?.state}
-                  maxLength={50}
                   autoComplete="address-level1"
                   aria-describedby="state-error"
                   className={state?.errors?.state ? "border-red-500" : ""}
@@ -125,9 +125,9 @@ export function NewForm() {
                   id="zipCode"
                   name="zipCode"
                   placeholder="10001"
-                  required
-                  pattern="[0-9]{5}(-[0-9]{4})?"
-                  maxLength={10}
+                  // required
+                  // pattern="[0-9]{5}(-[0-9]{4})?"
+                  // maxLength={10}
                   defaultValue={state.inputs?.zipCode}
                   autoComplete="postal-code"
                   aria-describedby="zipCode-error"
@@ -146,9 +146,9 @@ export function NewForm() {
                   id="country"
                   name="country"
                   placeholder="United States"
-                  required
-                  minLength={2}
-                  maxLength={56}
+                  // required
+                  // minLength={2}
+                  // maxLength={56}
                   defaultValue={state.inputs?.country}
                   autoComplete="country-name"
                   aria-describedby="country-error"
