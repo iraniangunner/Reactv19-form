@@ -18,7 +18,7 @@
 
 ## 3. Display a pending state during form submission
 
-- Utilize useFormStatus hook to access submission state
+- Utilize useActionState hook to access submission state
 - Create separate component for submit button
 - Update UI based on pending state (e.g., disable buttons, show spinners)
 - Consider optimistic UI updates for responsiveness
