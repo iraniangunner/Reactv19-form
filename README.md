@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Key Points for Advanced Form Handling in React
 
-## Getting Started
+## 1. Handle form submission on the client
 
-First, run the development server:
+- Use React state (e.g., useState) to manage form data
+- Implement onSubmit event handler for form submission
+- Perform client-side validation
+- Use controlled components for input fields
+- Consider form libraries for complex scenarios
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 2. Handle form submission with a Server Function
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Use 'use server' directive to define server functions
+- Leverage useActionState hook for state management
+- Perform server-side processing and validation
+- Access databases and server resources directly
+- Implement in supported frameworks (e.g., Next.js)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 3. Display a pending state during form submission
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Utilize useFormStatus hook to access submission state
+- Create separate component for submit button
+- Update UI based on pending state (e.g., disable buttons, show spinners)
+- Consider optimistic UI updates for responsiveness
 
-## Learn More
+## 4. Handling form submission errors
 
-To learn more about Next.js, take a look at the following resources:
+- Implement both client-side and server-side error handling
+- Use try-catch blocks in server functions
+- Update form state with error messages
+- Display errors clearly and accessibly in the UI
+- Handle field-level and form-level errors
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 5. Display a form submission error without JavaScript
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Implement server-side form handling and validation
+- Use useActionState with server actions
+- Return and render error states in initial HTML
+- Style error messages to be visible by default
+- Ensure functionality when JavaScript is disabled
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
